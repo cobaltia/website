@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["typedSql"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id          String @id @db.VarChar(20)
+  bankBalance Int    @default(0) @map("bank_balance")
+  tax         Float  @default(7) @map("tax")
+
+  @@map("client")
+}
+
+model Guild {
+  id               String  @id @db.VarChar(20)
+  logChannelId     String? @map("log_channel_id") @db.VarChar(20)
+  welcomeChannelId String? @map("welcome_channel_id") @db.VarChar(20)
+  voiceChannelId   String? @map("voice_channel_id") @db.VarChar(20)
+  welcomeMessage   String  @default("Welcome to {guild}, {user}!") @map("welcome_message")
+
+  @@map("guilds")
+}
+
+model User {
+  id              String            @id @db.VarChar(20)
+  guilds          String[]          @map("guilds")
+  bankBalance     Float             @default(0) @map("bank_balance")
+  bankLimit       Float             @default(1000) @map("bank_limit")
+  wallet          Float             @default(0) @map("wallet")
+  bounty          Float             @default(0) @map("bounty")
+  experience      Int               @default(0) @map("experience")
+  level           Int               @default(0) @map("level")
+  socialCredit    Int               @default(1000) @map("social_credit")
+  workCooldown    DateTime          @default(now()) @map("work_cooldown")
+  Voice           Voice[]
+  BankTransaction BankTransaction[]
+  Inventory       Inventory?
+
+  @@map("users")
+}
+
+model Inventory {
+  id        String @id @db.VarChar(20)
+  banknote  Int    @default(0) @map("bank_note")
+  cobuck    Int    @default(0) @map("cobuck")
+
+  user     User   @relation(fields: [id], references: [id], onDelete: Cascade)
+  @@map("inventories")
+}
+
+model Voice {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id") @db.VarChar(20)
+  channelId String   @map("channel_id") @db.VarChar(20)
+  guildId   String   @map("guild_id") @db.VarChar(20)
+  date      DateTime @default(now()) @map("date")
+  duration  Int      @default(0) @map("duration")
+  earned    Float    @default(0) @map("earned")
+
+  @@map("voices")
+}
+
+model BankTransaction {
+  id          String      @id @default(cuid())
+  amount      Float       @map("amount")
+  type        Transaction @map("type")
+  description String[]    @map("description")
+  account     User        @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId   String      @map("account_id")
+  date        DateTime    @default(now()) @map("date")
+
+  @@map("bank_transactions")
+}
+
+enum Transaction {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER
+}
