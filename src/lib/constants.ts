@@ -12,7 +12,7 @@ export const NAV_ITEMS = [
     href: "/items",
   },
   {
-    title: "Servers",
-    href: "/servers",
+    title: "Network",
+    href: "/network",
   },
 ];

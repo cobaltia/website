@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
+import { SidebarTrigger } from "~/components/ui/sidebar";
 import { Nav } from "./nav";
 import { NavSidebar } from "./nav-sidebar";
 import { UserNav } from "./user-nav";
