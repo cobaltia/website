@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
@@ -61,7 +59,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium hover:bg-zinc-100 hover:text-zinc-900 focus:bg-zinc-100 focus:text-zinc-900 disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-zinc-100/50 data-[state=open]:bg-zinc-100/50 data-[active=true]:text-zinc-900 ring-zinc-950/10 dark:ring-zinc-950/20 dark:outline-ring/40 outline-ring/50 transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50 dark:data-[active=true]:bg-zinc-800/50 dark:data-[state=open]:bg-zinc-800/50 dark:data-[active=true]:text-zinc-50 dark:ring-zinc-300/10 dark:dark:ring-zinc-300/20"
+  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium hover:bg-zinc-100 hover:text-zinc-900 focus:bg-zinc-100 focus:text-zinc-900 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-zinc-100 data-[state=open]:text-zinc-900 data-[state=open]:focus:bg-zinc-100 data-[state=open]:bg-zinc-100/50 focus-visible:ring-zinc-950/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50 dark:data-[state=open]:hover:bg-zinc-800 dark:data-[state=open]:text-zinc-50 dark:data-[state=open]:focus:bg-zinc-800 dark:data-[state=open]:bg-zinc-800/50 dark:focus-visible:ring-zinc-300/50"
 )
 
 function NavigationMenuTrigger({
@@ -131,7 +129,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "hover:bg-zinc-100 hover:text-zinc-900 focus:bg-zinc-100 focus:text-zinc-900 data-[active=true]:bg-zinc-100/50 data-[active=true]:text-zinc-900 ring-zinc-950/10 dark:ring-zinc-950/20 dark:outline-ring/40 outline-ring/50 [&_svg:not([class*='text-'])]:text-zinc-500 flex flex-col gap-1 rounded-sm p-2 text-sm transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50 dark:data-[active=true]:bg-zinc-800/50 dark:data-[active=true]:text-zinc-50 dark:ring-zinc-300/10 dark:dark:ring-zinc-300/20 dark:[&_svg:not([class*='text-'])]:text-zinc-400",
+        "data-[active=true]:focus:bg-zinc-100 data-[active=true]:hover:bg-zinc-100 data-[active=true]:bg-zinc-100/50 data-[active=true]:text-zinc-900 hover:bg-zinc-100 hover:text-zinc-900 focus:bg-zinc-100 focus:text-zinc-900 focus-visible:ring-zinc-950/50 [&_svg:not([class*='text-'])]:text-zinc-500 flex flex-col gap-1 rounded-sm p-2 text-sm transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4 dark:data-[active=true]:focus:bg-zinc-800 dark:data-[active=true]:hover:bg-zinc-800 dark:data-[active=true]:bg-zinc-800/50 dark:data-[active=true]:text-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50 dark:focus-visible:ring-zinc-300/50 dark:[&_svg:not([class*='text-'])]:text-zinc-400",
         className
       )}
       {...props}
