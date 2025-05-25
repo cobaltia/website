@@ -5,12 +5,15 @@ import { Nav } from "./nav";
 import { NavSidebar } from "./nav-sidebar";
 import { UserNav } from "./user-nav";
 import { RightNav } from "./right-nav";
+import Link from "next/link";
 
 export function Header() {
   return (
     <header className="mx-6 mt-6 flex flex-row items-center justify-between gap-3">
       <div className="flex items-center gap-3">
-        <h1>CN</h1>
+        <h1>
+          <Link href="/">CN</Link>
+        </h1>
         <div className="hidden sm:flex">
           <Nav />
         </div>
