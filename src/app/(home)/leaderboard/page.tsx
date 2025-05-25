@@ -1,6 +1,5 @@
 "use client";
-
-import { api } from "~/trpc/react";
+import { useTRPC } from "~/trpc/react";
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn, displayAvatarURL } from "~/lib/utils";
@@ -13,15 +12,17 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { useUser } from "@clerk/nextjs";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
+  const api = useTRPC();
   const [value, setValue] = useState("wallet");
   const { isSignedIn, user: clerkUser, isLoaded } = useUser();
   const {
     isLoading,
     isError,
     data: users,
-  } = api.leaderboard.getGlobalNetworth.useQuery({});
+  } = useQuery(api.leaderboard.getGlobalNetworth.queryOptions({}));
 
   return (
     <>
