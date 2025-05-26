@@ -57,7 +57,7 @@ export default function SocialCredit() {
                 </Avatar>
                 <p>{user.displayName}</p>
               </div>
-              <p>{user.socialCredit}</p>
+              <p>{user.socialCredit}/2,000</p>
             </div>
           ))}
         </>

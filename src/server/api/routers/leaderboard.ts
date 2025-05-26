@@ -177,7 +177,7 @@ export const leaderboardRouter = createTRPCRouter({
         displayName: users.find((u) => u.id === user.id)?.displayName,
         discriminator: users.find((u) => u.id === user.id)?.discriminator,
         avatar: users.find((u) => u.id === user.id)?.avatar,
-        socialCredit: user.socialCredit,
+        socialCredit: user.socialCredit.toLocaleString("en-US"),
       }));
     }),
   getGlobalUserVcTime: publicProcedure
