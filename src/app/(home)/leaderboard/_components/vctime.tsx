@@ -32,7 +32,7 @@ export default function VCTime() {
         <p>No Data</p>
       ) : (
         <>
-          {users.map((user) => (
+          {users.map((user, index) => (
             <div
               key={user.id}
               className={cn(
@@ -44,9 +44,7 @@ export default function VCTime() {
               )}
             >
               <div className="flex items-center gap-3">
-                <p>
-                  {users.findIndex((userMap) => userMap.id === user.id) + 1}
-                </p>
+                <p>{index + 1}</p>
                 <Avatar>
                   <AvatarImage
                     src={displayAvatarURL(

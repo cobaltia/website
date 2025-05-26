@@ -24,7 +24,7 @@ export default function Page() {
       <div className="flex flex-col items-center justify-center gap-3 pb-3">
         <h2 className="scroll-m-20 text-center text-3xl font-semibold tracking-tight first:mt-0">
           Global{" "}
-          {LEADERBOARD_OPTIONS.find((item) => item.value == value)?.label}{" "}
+          {LEADERBOARD_OPTIONS.find((item) => item.value === value)?.label}{" "}
           Leaderboard
         </h2>
         <Select value={value} onValueChange={setValue}>
