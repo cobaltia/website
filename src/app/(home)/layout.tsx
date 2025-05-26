@@ -1,16 +1,19 @@
-import { api, HydrateClient } from "~/trpc/server";
+import React from "react";
 import { Header } from "./_components/header";
 import { SidebarProvider } from "~/components/ui/sidebar";
+import { HydrateClient } from "~/trpc/server";
 
-export default async function Home() {
+export default function HomeLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <HydrateClient>
       <SidebarProvider>
         <main className="flex w-full flex-col">
           <Header />
-          <div className="flex h-full flex-col items-center justify-center">
-            <h1 className="text-center text-5xl">Cobalt Network</h1>
-          </div>
+          {children}
         </main>
       </SidebarProvider>
     </HydrateClient>
