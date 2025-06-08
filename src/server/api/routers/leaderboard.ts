@@ -5,6 +5,7 @@ import {
 import { env } from "~/env";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
+import { type User } from "~/lib/types";
 
 export const leaderboardRouter = createTRPCRouter({
   getGlobalUserWallet: publicProcedure
@@ -25,13 +26,7 @@ export const leaderboardRouter = createTRPCRouter({
       const usersResult = await fetch(
         `${env.BASE_URL}/api/users/getUserList?users=${userIds.join(",")}`,
       );
-      const users = (await usersResult.json()) as {
-        id: string;
-        username: string;
-        displayName: string;
-        discriminator: string;
-        avatar: string | null;
-      }[];
+      const users = (await usersResult.json()) as User[];
 
       return result.map((user) => ({
         id: user.id,
@@ -60,13 +55,7 @@ export const leaderboardRouter = createTRPCRouter({
       const usersResult = await fetch(
         `${env.BASE_URL}/api/users/getUserList?users=${userIds.join(",")}`,
       );
-      const users = (await usersResult.json()) as {
-        id: string;
-        username: string;
-        displayName: string;
-        discriminator: string;
-        avatar: string | null;
-      }[];
+      const users = (await usersResult.json()) as User[];
 
       return result.map((user) => ({
         id: user.id,
@@ -95,13 +84,7 @@ export const leaderboardRouter = createTRPCRouter({
       const usersResult = await fetch(
         `${env.BASE_URL}/api/users/getUserList?users=${userIds.join(",")}`,
       );
-      const users = (await usersResult.json()) as {
-        id: string;
-        username: string;
-        displayName: string;
-        discriminator: string;
-        avatar: string | null;
-      }[];
+      const users = (await usersResult.json()) as User[];
 
       return result.map((user) => ({
         id: user.id,
@@ -128,13 +111,7 @@ export const leaderboardRouter = createTRPCRouter({
       const usersResult = await fetch(
         `${env.BASE_URL}/api/users/getUserList?users=${userIds.join(",")}`,
       );
-      const users = (await usersResult.json()) as {
-        id: string;
-        username: string;
-        displayName: string;
-        discriminator: string;
-        avatar: string | null;
-      }[];
+      const users = (await usersResult.json()) as User[];
 
       return result.map((user) => ({
         id: user.id,
@@ -163,13 +140,7 @@ export const leaderboardRouter = createTRPCRouter({
       const usersResult = await fetch(
         `${env.BASE_URL}/api/users/getUserList?users=${userIds.join(",")}`,
       );
-      const users = (await usersResult.json()) as {
-        id: string;
-        username: string;
-        displayName: string;
-        discriminator: string;
-        avatar: string | null;
-      }[];
+      const users = (await usersResult.json()) as User[];
 
       return result.map((user) => ({
         id: user.id,
@@ -196,13 +167,7 @@ export const leaderboardRouter = createTRPCRouter({
       const usersResult = await fetch(
         `${env.BASE_URL}/api/users/getUserList?users=${userIds.join(",")}`,
       );
-      const users = (await usersResult.json()) as {
-        id: string;
-        username: string;
-        displayName: string;
-        discriminator: string;
-        avatar: string | null;
-      }[];
+      const users = (await usersResult.json()) as User[];
 
       return result.map((user) => ({
         id: user.user_id,
