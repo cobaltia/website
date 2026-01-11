@@ -23,7 +23,7 @@ export default function RootLayout({
         className={`${GeistSans.variable}`}
         suppressHydrationWarning
       >
-        <body className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-white">
+        <body className="background">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
