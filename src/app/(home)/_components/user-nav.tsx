@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-  useUser,
-} from "@clerk/nextjs";
-import { ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
@@ -25,25 +17,23 @@ import {
 } from "~/components/ui/sidebar";
 
 export function UserNav() {
-  const { isSignedIn, user, isLoaded } = useUser();
+  // if (!isLoaded) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
-
-  if (!isSignedIn) {
-    return (
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SignedOut>
-            <SidebarMenuButton asChild size="lg">
-              <SignInButton />
-            </SidebarMenuButton>
-          </SignedOut>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    );
-  }
+  // if (!isSignedIn) {
+  //   return (
+  //     <SidebarMenu>
+  //       <SidebarMenuItem>
+  //         <SignedOut>
+  //           <SidebarMenuButton asChild size="lg">
+  //             <SignInButton />
+  //           </SidebarMenuButton>
+  //         </SignedOut>
+  //       </SidebarMenuItem>
+  //     </SidebarMenu>
+  //   );
+  // }
 
   return (
     <SidebarMenu>
