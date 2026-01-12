@@ -25,7 +25,7 @@ export function NavSidebar({ children }: { children: React.ReactNode }) {
             <SidebarMenu>
               {NAV_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton>
                     <Link href={item.href}>{item.title}</Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

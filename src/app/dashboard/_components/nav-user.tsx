@@ -1,5 +1,4 @@
-import { useUser } from "@clerk/nextjs";
-import { EllipsisVertical } from "lucide-react";
+import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -13,16 +12,16 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "~/components/ui/sidebar";
+import { useAuthenticated } from "~/contexts/AuthenticationContext";
+import { useDiscordPack } from "~/contexts/DiscordPackContext";
 
 export function NavUser() {
-  const { isSignedIn, user, isLoaded } = useUser();
   const { isMobile } = useSidebar();
+  const authenticated = useAuthenticated();
+  const pack = useDiscordPack();
+  const user = pack?.user;
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
-
-  if (!isSignedIn) {
+  if (!authenticated) {
     return null;
   }
 
@@ -30,7 +29,7 @@ export function NavUser() {
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger>
             <SidebarMenuButton>
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
@@ -44,7 +43,7 @@ export function NavUser() {
               <div className="grid flex-1 text-left text-sm leading-tight">
                 {user.username}
               </div>
-              <EllipsisVertical className="ml-auto size-4" />
+              <IconDotsVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -53,7 +52,7 @@ export function NavUser() {
             align="end"
             sideOffset={9}
           >
-            <DropdownMenuItem asChild>
+            <DropdownMenuItem>
               <a href="/dashboard/settings">Settings</a>
             </DropdownMenuItem>
             <DropdownMenuItem>

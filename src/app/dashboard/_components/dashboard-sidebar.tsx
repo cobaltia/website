@@ -1,7 +1,5 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { Home, Inbox, Settings } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -16,38 +14,34 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar";
 import { NavUser } from "./nav-user";
+import { IconHome2, IconInbox, IconSettings } from "@tabler/icons-react";
 
 const items = [
   {
     title: "Home",
     url: "/dashboard",
-    icon: Home,
+    icon: IconHome2,
   },
   {
     title: "Servers",
     url: "/dashboard/servers",
-    icon: Inbox,
+    icon: IconInbox,
   },
   {
     title: "Settings",
     url: "/dashboard/settings",
-    icon: Settings,
+    icon: IconSettings,
   },
 ];
 export function DashboardSidebar() {
   const { isMobile } = useSidebar();
-  const { isSignedIn, user, isLoaded } = useUser();
-  console.log({ isSignedIn, user, isLoaded });
 
   return (
     <Sidebar variant="sidebar" side={isMobile ? "right" : "left"}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/">
                 <span className="text-base font-semibold">Cobalt Network</span>
               </Link>
@@ -61,7 +55,7 @@ export function DashboardSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

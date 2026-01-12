@@ -3,6 +3,7 @@ import { LoginData } from "@sapphire/plugin-api";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { setAuthenticated } from "~/contexts/AuthenticationContext";
 import { FetchMethods, LocalStorageKeys } from "~/lib/constants";
 import { apiFetch, saveState } from "~/lib/utils";
 
@@ -10,6 +11,7 @@ export default function Page() {
   const params = useSearchParams();
   const router = useRouter();
   const hasExchangedRef = useRef(false);
+  const writeAuthenticated = setAuthenticated();
 
   const exchangeMutation = useMutation({
     mutationFn: async (code: string) => {
@@ -21,6 +23,7 @@ export default function Page() {
       console.log("OAuth exchange data:", data);
       saveState(LocalStorageKeys.DiscordPack, data);
       saveState(LocalStorageKeys.LastSync, Date.now());
+      writeAuthenticated(true);
       return data;
     },
     onSuccess: async () => {

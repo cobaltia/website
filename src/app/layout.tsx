@@ -3,6 +3,8 @@ import { type Metadata } from "next";
 import { ThemeProvider } from "~/components/theme-provider";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ReactQueryProvider } from "~/components/react-query-provider";
+import AuthenticatedProvider from "~/contexts/AuthenticationContext";
+import DiscordPackProvider from "~/contexts/DiscordPackContext";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -36,7 +38,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <AuthenticatedProvider>
+            <DiscordPackProvider>
+              <ReactQueryProvider>{children}</ReactQueryProvider>
+            </DiscordPackProvider>
+          </AuthenticatedProvider>
         </ThemeProvider>
       </body>
     </html>

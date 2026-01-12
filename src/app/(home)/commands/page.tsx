@@ -8,20 +8,13 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "~/components/ui/navigation-menu";
-import { useTRPC } from "~/trpc/react";
 
 export default function Page() {
-  const api = useTRPC();
-  const {
-    isLoading,
-    isError,
-    data: commands,
-  } = useQuery(api.command.getCommands.queryOptions());
   const [value, setValue] = useState("admin");
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-3 pb-3">
+      {/*<div className="flex flex-col items-center justify-center gap-3 pb-3">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
           Commands
         </h2>
@@ -89,7 +82,8 @@ export default function Page() {
             </div>
           </>
         )}
-      </div>
+      </div>*/}
+      Commands
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import isBrowser from "./isBrowser";
-import { FetchMethods, LocalStorageKeys } from "./constants";
+import { BASE_API_URL, FetchMethods, LocalStorageKeys } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -38,7 +38,6 @@ export const clearState = (key: LocalStorageKeys) => {
 export async function apiFetch<T>(path: string, options: RequestInit = {}) {
   const response = await fetch(`${BASE_API_URL}${path}`, {
     ...options,
-    credentials: "include",
     headers: {
       ...options.headers,
       "Content-Type": "application/json",
