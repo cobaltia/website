@@ -13,6 +13,7 @@ import {
 import { useAuthenticated } from "~/contexts/AuthenticationContext";
 import { useDiscordPack } from "~/contexts/DiscordPackContext";
 import { oauthURL } from "~/lib/constants";
+import { displayAvatarURL } from "~/lib/discordUtils";
 
 export function RightNav() {
   const { setTheme, theme } = useTheme();
@@ -49,8 +50,11 @@ export function RightNav() {
       <DropdownMenu>
         <DropdownMenuTrigger className="cursor-pointer">
           <Avatar>
-            <AvatarImage src={user.imageUrl} alt={user.username ?? undefined} />
-            <AvatarFallback>{user.username?.[0]}</AvatarFallback>
+            <AvatarImage
+              src={displayAvatarURL(user)}
+              alt={user?.username ?? undefined}
+            />
+            <AvatarFallback>{user?.username?.[0]}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent

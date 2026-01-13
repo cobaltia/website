@@ -18,6 +18,7 @@ import {
 import { useAuthenticated } from "~/contexts/AuthenticationContext";
 import { useDiscordPack } from "~/contexts/DiscordPackContext";
 import { oauthURL } from "~/lib/constants";
+import { displayAvatarURL } from "~/lib/discordUtils";
 
 export function UserNav() {
   const authenticated = useAuthenticated();
@@ -48,15 +49,15 @@ export function UserNav() {
             <SidebarMenuButton size="lg">
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={user.imageUrl}
-                  alt={user.username ?? undefined}
+                  src={displayAvatarURL(user)}
+                  alt={user?.username ?? undefined}
                 />
                 <AvatarFallback className="rounded-lg">
-                  {user.username?.[0]}
+                  {user?.username?.[0]}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                {user.username}
+                {user?.username}
               </div>
               <IconSelector />
             </SidebarMenuButton>

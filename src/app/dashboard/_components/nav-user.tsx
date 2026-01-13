@@ -14,6 +14,7 @@ import {
 } from "~/components/ui/sidebar";
 import { useAuthenticated } from "~/contexts/AuthenticationContext";
 import { useDiscordPack } from "~/contexts/DiscordPackContext";
+import { displayAvatarURL } from "~/lib/discordUtils";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -33,15 +34,15 @@ export function NavUser() {
             <SidebarMenuButton>
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={user.imageUrl}
-                  alt={user.username ?? undefined}
+                  src={displayAvatarURL(user)}
+                  alt={user?.username}
                 />
                 <AvatarFallback className="rounded-lg">
-                  {user.username?.[0]}
+                  {user?.username?.[0]}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                {user.username}
+                {user?.username}
               </div>
               <IconDotsVertical className="ml-auto size-4" />
             </SidebarMenuButton>
