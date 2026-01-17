@@ -45,3 +45,19 @@ export interface VcTimeLeaderboard {
   rank: number;
   tag: string;
 }
+
+export interface CommandResponse {
+  name: string;
+  commands: Command[];
+}
+
+export interface Command {
+  name: string;
+  description: string;
+  category: string;
+  subcommand: SubCommand[] | null;
+}
+
+interface SubCommand {
+  name: string;
+}

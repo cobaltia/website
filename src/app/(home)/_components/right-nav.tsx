@@ -10,14 +10,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { useAuthenticated } from "~/contexts/AuthenticationContext";
-import { useDiscordPack } from "~/contexts/DiscordPackContext";
+import {
+  setAuthenticated,
+  useAuthenticated,
+} from "~/contexts/AuthenticationContext";
+import {
+  mergeDiscordPack,
+  useDiscordPack,
+} from "~/contexts/DiscordPackContext";
 import { oauthURL } from "~/lib/constants";
 import { displayAvatarURL } from "~/lib/discordUtils";
+import { clearData, logOut } from "~/lib/utils";
 
 export function RightNav() {
   const { setTheme, theme } = useTheme();
   const authenticated = useAuthenticated();
+  const writeAuthenticated = setAuthenticated();
+  const setPack = mergeDiscordPack();
   const pack = useDiscordPack();
   const user = pack?.user;
   const Router = useRouter();
@@ -68,7 +77,13 @@ export function RightNav() {
           <DropdownMenuItem className="cursor-pointer">
             <Link href="/profile">Profile</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="w-full cursor-pointer">
+          <DropdownMenuItem
+            className="w-full cursor-pointer"
+            onClick={async () => {
+              await logOut();
+              clearData(setPack, writeAuthenticated, Router.push);
+            }}
+          >
             Sign Out
           </DropdownMenuItem>
         </DropdownMenuContent>
