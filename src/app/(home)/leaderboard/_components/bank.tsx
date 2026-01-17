@@ -1,12 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
+import { useInView } from "react-intersection-observer";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
+
 import { Skeleton } from "~/components/ui/skeleton";
 import { useAuthenticated } from "~/contexts/AuthenticationContext";
 import { useDiscordPack } from "~/contexts/DiscordPackContext";
 import { apiFetch, cn } from "~/lib/utils";
 import { BankLeaderboard } from "~/types/cobaltia";
+import LeaderboardSkeleton from "./leaderboard-skeleton";
 
 export default function Bank() {
   const fetchBankLeaderboard = async ({ pageParam }: { pageParam: number }) => {
@@ -33,17 +35,20 @@ export default function Bank() {
   const pack = useDiscordPack();
   const user = pack?.user;
 
+  const { ref: loadMoreRef, inView } = useInView({
+    threshold: 0.5,
+  });
+
+  React.useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage]);
+
   return (
     <>
       {status === "pending" ? (
-        <>
-          {Array.from({ length: 20 }).map((_, index) => (
-            <Skeleton
-              key={index}
-              className="container flex h-14 w-2xl items-center justify-between gap-3 truncate rounded-sm bg-zinc-100 p-3 hover:bg-zinc-200 sm:min-w-96 dark:bg-zinc-900 dark:hover:bg-zinc-800"
-            />
-          ))}
-        </>
+        <LeaderboardSkeleton />
       ) : status === "error" || !data ? (
         <p>No Data</p>
       ) : (
@@ -73,19 +78,12 @@ export default function Bank() {
               ))}
             </React.Fragment>
           ))}
+          <div ref={loadMoreRef} />
           <div>
-            <Button
-              onClick={() => fetchNextPage()}
-              disabled={!hasNextPage || isFetching}
-            >
-              {isFetchingNextPage
-                ? "Loading more..."
-                : hasNextPage
-                  ? "Load More"
-                  : "No more data"}
-            </Button>
+            {isFetching && !isFetchingNextPage ? (
+              <LeaderboardSkeleton />
+            ) : !hasNextPage ? null : null}
           </div>
-          <div>{isFetching && !isFetchingNextPage ? "fetching..." : null}</div>
         </>
       )}
     </>
