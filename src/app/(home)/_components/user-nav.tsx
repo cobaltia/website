@@ -15,13 +15,22 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
-import { useAuthenticated } from "~/contexts/AuthenticationContext";
-import { useDiscordPack } from "~/contexts/DiscordPackContext";
+import {
+  setAuthenticated,
+  useAuthenticated,
+} from "~/contexts/AuthenticationContext";
+import {
+  mergeDiscordPack,
+  useDiscordPack,
+} from "~/contexts/DiscordPackContext";
 import { oauthURL } from "~/lib/constants";
 import { displayAvatarURL } from "~/lib/discordUtils";
+import { clearData, logOut } from "~/lib/utils";
 
 export function UserNav() {
   const authenticated = useAuthenticated();
+  const writeAuthenticated = setAuthenticated();
+  const setPack = mergeDiscordPack();
   const pack = useDiscordPack();
   const user = pack?.user;
   const Router = useRouter();
@@ -34,7 +43,7 @@ export function UserNav() {
             size="lg"
             onClick={() => Router.push(oauthURL.toString())}
           >
-            signIn
+            Sign In
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
@@ -74,7 +83,14 @@ export function UserNav() {
             <DropdownMenuItem>
               <Link href="/profile">Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Sign Out</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await logOut();
+                clearData(setPack, writeAuthenticated, Router.push);
+              }}
+            >
+              Sign Out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

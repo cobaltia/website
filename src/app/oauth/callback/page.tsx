@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { setAuthenticated } from "~/contexts/AuthenticationContext";
+import { mergeDiscordPack } from "~/contexts/DiscordPackContext";
 import { FetchMethods, LocalStorageKeys } from "~/lib/constants";
 import { apiFetch, saveState } from "~/lib/utils";
 
@@ -12,6 +13,7 @@ export default function Page() {
   const router = useRouter();
   const hasExchangedRef = useRef(false);
   const writeAuthenticated = setAuthenticated();
+  const mergePack = mergeDiscordPack();
 
   const exchangeMutation = useMutation({
     mutationFn: async (code: string) => {
@@ -24,6 +26,8 @@ export default function Page() {
       saveState(LocalStorageKeys.DiscordPack, data);
       saveState(LocalStorageKeys.LastSync, Date.now());
       writeAuthenticated(true);
+      mergePack(data);
+
       return data;
     },
     onSuccess: async () => {

@@ -12,7 +12,7 @@ import { apiFetch } from "~/lib/utils";
 import { CommandResponse } from "~/types/cobaltia";
 
 export default function Page() {
-  const [value, setValue] = useState("admin");
+  const [value, setValue] = useState("general");
   const fetchCommands = async () => {
     const data = await apiFetch<CommandResponse[]>("/commands");
     return data;

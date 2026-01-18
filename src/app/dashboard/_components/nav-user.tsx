@@ -1,4 +1,5 @@
 import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,15 +13,25 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "~/components/ui/sidebar";
-import { useAuthenticated } from "~/contexts/AuthenticationContext";
-import { useDiscordPack } from "~/contexts/DiscordPackContext";
+import {
+  setAuthenticated,
+  useAuthenticated,
+} from "~/contexts/AuthenticationContext";
+import {
+  mergeDiscordPack,
+  useDiscordPack,
+} from "~/contexts/DiscordPackContext";
 import { displayAvatarURL } from "~/lib/discordUtils";
+import { clearData, logOut } from "~/lib/utils";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const authenticated = useAuthenticated();
+  const writeAuthenticated = setAuthenticated();
+  const setPack = mergeDiscordPack();
   const pack = useDiscordPack();
   const user = pack?.user;
+  const Router = useRouter();
 
   if (!authenticated) {
     return null;
@@ -56,7 +67,12 @@ export function NavUser() {
             <DropdownMenuItem>
               <a href="/dashboard/settings">Settings</a>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await logOut();
+                clearData(setPack, writeAuthenticated, Router.push);
+              }}
+            >
               <IconLogout />
               Log out
             </DropdownMenuItem>

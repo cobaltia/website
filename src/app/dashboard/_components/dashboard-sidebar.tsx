@@ -56,7 +56,7 @@ export function DashboardSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton>
-                    <a href={item.url}>
+                    <a href={item.url} className="flex items-center gap-1.5">
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
