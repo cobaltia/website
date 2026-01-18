@@ -42,10 +42,10 @@ export default function NetWorth() {
   });
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   return (
     <>
@@ -86,10 +86,8 @@ export default function NetWorth() {
           ))}
           {hasNextPage && (
             <>
+              {isFetchingNextPage ? <LeaderboardSkeleton /> : null}
               <div ref={loadMoreRef} />
-              {isFetching && !isFetchingNextPage ? (
-                <LeaderboardSkeleton />
-              ) : null}
             </>
           )}
         </>

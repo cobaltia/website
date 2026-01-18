@@ -42,10 +42,10 @@ export default function SocialCredit() {
   });
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   return (
     <>
@@ -82,10 +82,8 @@ export default function SocialCredit() {
           ))}
           {hasNextPage && (
             <>
+              {isFetchingNextPage ? <LeaderboardSkeleton /> : null}
               <div ref={loadMoreRef} />
-              {isFetching && !isFetchingNextPage ? (
-                <LeaderboardSkeleton />
-              ) : null}
             </>
           )}
         </>

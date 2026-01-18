@@ -38,10 +38,10 @@ export default function Bank() {
   });
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   return (
     <>
@@ -78,10 +78,8 @@ export default function Bank() {
           ))}
           {hasNextPage && (
             <>
+              {isFetchingNextPage ? <LeaderboardSkeleton /> : null}
               <div ref={loadMoreRef} />
-              {isFetching && !isFetchingNextPage ? (
-                <LeaderboardSkeleton />
-              ) : null}
             </>
           )}
         </>
