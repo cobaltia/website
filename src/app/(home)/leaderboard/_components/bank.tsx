@@ -1,9 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-
-import { Skeleton } from "~/components/ui/skeleton";
 import { useAuthenticated } from "~/contexts/AuthenticationContext";
 import { useDiscordPack } from "~/contexts/DiscordPackContext";
 import { apiFetch, cn } from "~/lib/utils";
@@ -39,11 +37,11 @@ export default function Bank() {
     threshold: 0.5,
   });
 
-  React.useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage && !isFetching) {
+  useEffect(() => {
+    if (inView && hasNextPage) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage]);
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <>
@@ -78,12 +76,14 @@ export default function Bank() {
               ))}
             </React.Fragment>
           ))}
-          <div ref={loadMoreRef} />
-          <div>
-            {isFetching && !isFetchingNextPage ? (
-              <LeaderboardSkeleton />
-            ) : !hasNextPage ? null : null}
-          </div>
+          {hasNextPage && (
+            <>
+              <div ref={loadMoreRef} />
+              {isFetching && !isFetchingNextPage ? (
+                <LeaderboardSkeleton />
+              ) : null}
+            </>
+          )}
         </>
       )}
     </>

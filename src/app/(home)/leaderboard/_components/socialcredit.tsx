@@ -1,13 +1,12 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import React from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React, { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
-import { Skeleton } from "~/components/ui/skeleton";
 import { useAuthenticated } from "~/contexts/AuthenticationContext";
 import { useDiscordPack } from "~/contexts/DiscordPackContext";
 import { apiFetch, cn } from "~/lib/utils";
 import { SocialCreditLeaderboard } from "~/types/cobaltia";
 import LeaderboardSkeleton from "./leaderboard-skeleton";
+import { useInView } from "react-intersection-observer";
 
 export default function SocialCredit() {
   const fetchSocialCreditLeaderboard = async ({
@@ -37,6 +36,16 @@ export default function SocialCredit() {
   const authenticated = useAuthenticated();
   const pack = useDiscordPack();
   const user = pack?.user;
+
+  const { ref: loadMoreRef, inView } = useInView({
+    threshold: 0.5,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <>
@@ -71,19 +80,14 @@ export default function SocialCredit() {
               ))}
             </React.Fragment>
           ))}
-          <div>
-            <Button
-              onClick={() => fetchNextPage()}
-              disabled={!hasNextPage || isFetching}
-            >
-              {isFetchingNextPage
-                ? "Loading more..."
-                : hasNextPage
-                  ? "Load More"
-                  : "No more data"}
-            </Button>
-          </div>
-          <div>{isFetching && !isFetchingNextPage ? "fetching..." : null}</div>
+          {hasNextPage && (
+            <>
+              <div ref={loadMoreRef} />
+              {isFetching && !isFetchingNextPage ? (
+                <LeaderboardSkeleton />
+              ) : null}
+            </>
+          )}
         </>
       )}
     </>
