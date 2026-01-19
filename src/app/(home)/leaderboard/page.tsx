@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -17,7 +17,7 @@ import VCTime from "./_components/vctime";
 import { LEADERBOARD_OPTIONS } from "~/lib/constants";
 
 export default function Page() {
-  const [value, setValue] = useState("level");
+  const [value, setValue] = useState<string | null>("level");
 
   return (
     <>

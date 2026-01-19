@@ -1,21 +1,13 @@
 "use client";
 
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-  useUser,
-} from "@clerk/nextjs";
-import { ChevronsUpDown } from "lucide-react";
+import { IconSelector } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import {
@@ -23,23 +15,36 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
+import {
+  setAuthenticated,
+  useAuthenticated,
+} from "~/contexts/AuthenticationContext";
+import {
+  mergeDiscordPack,
+  useDiscordPack,
+} from "~/contexts/DiscordPackContext";
+import { oauthURL } from "~/lib/constants";
+import { displayAvatarURL } from "~/lib/discordUtils";
+import { clearData, logOut } from "~/lib/utils";
 
 export function UserNav() {
-  const { isSignedIn, user, isLoaded } = useUser();
+  const authenticated = useAuthenticated();
+  const writeAuthenticated = setAuthenticated();
+  const setPack = mergeDiscordPack();
+  const pack = useDiscordPack();
+  const user = pack?.user;
+  const Router = useRouter();
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
-
-  if (!isSignedIn) {
+  if (!authenticated) {
     return (
       <SidebarMenu>
         <SidebarMenuItem>
-          <SignedOut>
-            <SidebarMenuButton asChild size="lg">
-              <SignInButton />
-            </SidebarMenuButton>
-          </SignedOut>
+          <SidebarMenuButton
+            size="lg"
+            onClick={() => Router.push(oauthURL.toString())}
+          >
+            Sign In
+          </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
     );
@@ -48,43 +53,46 @@ export function UserNav() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SignedIn>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton size="lg">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage
-                    src={user.imageUrl}
-                    alt={user.username ?? undefined}
-                  />
-                  <AvatarFallback className="rounded-lg">
-                    {user.username?.[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  {user.username}
-                </div>
-                <ChevronsUpDown />
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <SidebarMenuButton size="lg">
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarImage
+                  src={displayAvatarURL(user)}
+                  alt={user?.username ?? undefined}
+                />
+                <AvatarFallback className="rounded-lg">
+                  {user?.username?.[0]}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                {user?.username}
+              </div>
+              <IconSelector />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
 
-            <DropdownMenuContent
-              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-              side="bottom"
-              align="start"
+          <DropdownMenuContent
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            side="bottom"
+            align="start"
+          >
+            <DropdownMenuItem>
+              <Link href="/dashboard">Dashboard</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/profile">Profile</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await logOut();
+                clearData(setPack, writeAuthenticated, Router.push);
+              }}
             >
-              <DropdownMenuItem>
-                <Link href="/dashboard">Dashboard</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/profile">Profile</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <SignOutButton />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SignedIn>
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
   );
