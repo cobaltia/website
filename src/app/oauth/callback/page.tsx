@@ -2,7 +2,7 @@
 import { LoginData } from "@sapphire/plugin-api";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Button } from "~/components/ui/button";
 import { Spinner } from "~/components/ui/spinner";
 import { setAuthenticated } from "~/contexts/AuthenticationContext";
@@ -10,7 +10,7 @@ import { mergeDiscordPack } from "~/contexts/DiscordPackContext";
 import { FetchMethods, LocalStorageKeys } from "~/lib/constants";
 import { apiFetch, saveState } from "~/lib/utils";
 
-export default function Page() {
+function CallbackContent() {
   const params = useSearchParams();
   const router = useRouter();
   const hasExchangedRef = useRef(false);
@@ -24,7 +24,6 @@ export default function Page() {
         body: JSON.stringify({ code }),
       });
 
-      console.log("OAuth exchange data:", data);
       saveState(LocalStorageKeys.DiscordPack, data);
       saveState(LocalStorageKeys.LastSync, Date.now());
       writeAuthenticated(true);
@@ -73,5 +72,13 @@ export default function Page() {
         Loading
       </div>
     </>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CallbackContent />
+    </Suspense>
   );
 }

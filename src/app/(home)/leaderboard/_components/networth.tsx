@@ -79,7 +79,7 @@ export default function NetWorth() {
                     </Avatar>
                     <p>{data.tag}</p>
                   </div>
-                  <p>{data.networth}</p>
+                  <p>₡{data.networth}</p>
                 </div>
               ))}
             </React.Fragment>

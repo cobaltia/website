@@ -79,7 +79,7 @@ export default function Wallet() {
                     </Avatar>
                     <p>{data.tag}</p>
                   </div>
-                  <p>{data.wallet}</p>
+                  <p>₡{data.wallet}</p>
                 </div>
               ))}
             </React.Fragment>

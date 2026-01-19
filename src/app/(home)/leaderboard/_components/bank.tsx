@@ -71,7 +71,7 @@ export default function Bank() {
                     </Avatar>
                     <p>{data.tag}</p>
                   </div>
-                  <p>{data.bank}</p>
+                  <p>₡{data.bank}</p>
                 </div>
               ))}
             </React.Fragment>
