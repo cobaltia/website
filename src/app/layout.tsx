@@ -1,5 +1,5 @@
 import "~/styles/globals.css";
-import { type Metadata } from "next";
+import { type Viewport, type Metadata } from "next";
 import { ThemeProvider } from "~/components/theme-provider";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ReactQueryProvider } from "~/components/react-query-provider";
@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   title: "Cobalt Network",
   description: "The official website of Cobalt Network.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
