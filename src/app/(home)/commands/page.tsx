@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -43,7 +44,7 @@ export default function Page() {
           <>
             <div className="flex items-center justify-center">
               <NavigationMenu className="mb-3">
-                <NavigationMenuList>
+                <NavigationMenuList className="gap-1">
                   {data.map((category) => (
                     <NavigationMenuItem
                       key={category.name}
@@ -71,22 +72,15 @@ export default function Page() {
                     className="flex flex-col gap-3 sm:w-2xl"
                   >
                     {category.commands.map((command) => (
-                      <div
+                      <Card
                         key={command.name}
-                        className="rounded-sm bg-zinc-100 p-6 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+                        className="transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
                       >
-                        {!command.subcommand && (
-                          <h3 className="mb-1 font-bold">/{command.name}</h3>
-                        )}
-                        {command.subcommand?.map((subcommand) => (
-                          <>
-                            <h3 className="mb-1 font-bold">
-                              /{command.name} {subcommand.name}
-                            </h3>
-                          </>
-                        ))}
-                        <p>{command.description}</p>
-                      </div>
+                        <CardHeader>
+                          <CardTitle>/{command.name}</CardTitle>
+                        </CardHeader>
+                        <CardContent>{command.description}</CardContent>
+                      </Card>
                     ))}
                   </div>
                 ))}

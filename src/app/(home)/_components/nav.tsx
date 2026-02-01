@@ -14,7 +14,7 @@ export function Nav() {
       <NavigationMenuList>
         {NAV_ITEMS.map((item) => (
           <NavigationMenuItem key={item.title}>
-            <Link href={item.href} legacyBehavior passHref>
+            <Link href={item.href}>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 {item.title}
               </NavigationMenuLink>
