@@ -61,3 +61,13 @@ export interface Command {
 interface SubCommand {
   name: string;
 }
+
+export interface Item {
+  displayName: string;
+  name: string;
+  description: string;
+  collectible: boolean;
+  price: number;
+  sellPrice: number;
+  icon: string;
+}
