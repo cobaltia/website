@@ -1,19 +1,25 @@
 "use client";
 
+import Link from "next/link";
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { Nav } from "./nav";
 import { NavSidebar } from "./nav-sidebar";
 import { UserNav } from "./user-nav";
 import { RightNav } from "./right-nav";
-import Link from "next/link";
 
 export function Header() {
   return (
     <header className="mx-6 mt-6 flex flex-row items-center justify-between gap-3">
       <div className="flex items-center gap-3">
-        <h1>
-          <Link href="/">CN</Link>
-        </h1>
+        <Link href="/" className="flex items-center">
+          <img
+            src="/Cobalt_Seal1.png"
+            alt="Cobalt Network"
+            width={28}
+            height={28}
+            className="size-7"
+          />
+        </Link>
         <div className="hidden sm:flex">
           <Nav />
         </div>
