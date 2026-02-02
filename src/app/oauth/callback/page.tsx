@@ -1,5 +1,4 @@
 "use client";
-import { LoginData } from "@sapphire/plugin-api";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef } from "react";
@@ -9,6 +8,7 @@ import { setAuthenticated } from "~/contexts/AuthenticationContext";
 import { mergeDiscordPack } from "~/contexts/DiscordPackContext";
 import { FetchMethods, LocalStorageKeys } from "~/lib/constants";
 import { apiFetch, saveState } from "~/lib/utils";
+import { TransformedLoginData } from "~/types/apiData";
 
 function CallbackContent() {
   const params = useSearchParams();
@@ -19,7 +19,7 @@ function CallbackContent() {
 
   const exchangeMutation = useMutation({
     mutationFn: async (code: string) => {
-      const data = await apiFetch<LoginData>("/oauth/callback", {
+      const data = await apiFetch<TransformedLoginData>("/oauth/callback", {
         method: FetchMethods.Post,
         body: JSON.stringify({ code }),
       });

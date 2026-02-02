@@ -1,11 +1,13 @@
 "use client";
-import { LoginData } from "@sapphire/plugin-api";
 import constate from "constate";
 import { useState } from "react";
 import { LocalStorageKeys } from "~/lib/constants";
 import { loadState } from "~/lib/utils";
+import { TransformedLoginData } from "~/types/apiData";
 
-const discordPack = loadState<LoginData>(LocalStorageKeys.DiscordPack);
+const discordPack = loadState<TransformedLoginData>(
+  LocalStorageKeys.DiscordPack,
+);
 
 const useAuthenticationState = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(

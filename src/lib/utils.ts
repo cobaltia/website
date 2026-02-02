@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import isBrowser from "./isBrowser";
 import { BASE_API_URL, FetchMethods, LocalStorageKeys } from "./constants";
-import { LoginData } from "@sapphire/plugin-api";
+import { TransformedLoginData } from "~/types/apiData";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,7 +55,7 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}) {
   }
 }
 
-type SetPackCallback = (newPack: Partial<LoginData>) => void;
+type SetPackCallback = (newPack: Partial<TransformedLoginData>) => void;
 type SetAuthenticatedCallback = (newAuthenticated: boolean) => void;
 type ChangeRouteCallback = (newRoute: string) => void;
 
