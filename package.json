@@ -36,6 +36,7 @@
     "shadcn": "^3.7.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "utility-types": "^3.11.0",
     "website": "link:"
   },
   "devDependencies": {

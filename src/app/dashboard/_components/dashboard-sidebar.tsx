@@ -41,11 +41,16 @@ export function DashboardSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <Link href="/">
-                <span className="text-base font-semibold">Cobalt Network</span>
-              </Link>
-            </SidebarMenuButton>
+            <SidebarMenuButton
+              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              render={
+                <Link href="/">
+                  <span className="text-base font-semibold">
+                    Cobalt Network
+                  </span>
+                </Link>
+              }
+            />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -55,12 +60,14 @@ export function DashboardSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton>
-                    <a href={item.url} className="flex items-center gap-1.5">
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <SidebarMenuButton
+                    render={
+                      <a href={item.url} className="flex items-center gap-1.5">
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    }
+                  />
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>

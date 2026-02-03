@@ -1,18 +1,23 @@
 "use client";
-import { LoginData } from "@sapphire/plugin-api";
 import constate from "constate";
 import { useCallback, useState } from "react";
 import { LocalStorageKeys } from "~/lib/constants";
 import { loadState } from "~/lib/utils";
 import { mergeDefault } from "@sapphire/utilities";
+import { TransformedLoginData } from "~/types/apiData";
 
-const discordPack = loadState<LoginData>(LocalStorageKeys.DiscordPack);
+const discordPack = loadState<TransformedLoginData>(
+  LocalStorageKeys.DiscordPack,
+);
 
 const useDiscordPackState = () => {
-  const [pack, setPack] = useState<LoginData>(discordPack ?? { user: null });
+  const [pack, setPack] = useState<TransformedLoginData>(
+    discordPack ?? ({ user: null } as TransformedLoginData),
+  );
 
   const mergePack = useCallback(
-    (newPack: Partial<LoginData>) => setPack(mergeDefault(pack, newPack)),
+    (newPack: Partial<TransformedLoginData>) =>
+      setPack(mergeDefault(pack, newPack)),
     [pack],
   );
 
