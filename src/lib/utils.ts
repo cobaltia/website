@@ -2,7 +2,8 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import isBrowser from "./isBrowser";
 import { BASE_API_URL, FetchMethods, LocalStorageKeys } from "./constants";
-import { LoginData } from "@sapphire/plugin-api";
+import { TransformedLoginData } from "~/types/apiData";
+import { ValuesType } from "utility-types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,7 +56,7 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}) {
   }
 }
 
-type SetPackCallback = (newPack: Partial<LoginData>) => void;
+type SetPackCallback = (newPack: Partial<TransformedLoginData>) => void;
 type SetAuthenticatedCallback = (newAuthenticated: boolean) => void;
 type ChangeRouteCallback = (newRoute: string) => void;
 
@@ -73,4 +74,27 @@ export function clearData(
   setPack({ user: null });
   setAuthenticated(false);
   changeRoute("/");
+}
+
+export function displayIconURL(
+  guild: ValuesType<TransformedLoginData["transformedGuilds"]>,
+  { format = "default", size = 256 } = {},
+) {
+  if (!guild.icon) return undefined;
+  if (format === "default")
+    format = guild.icon.startsWith("a_") ? "gif" : "png";
+  return `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${format}?size=${size}`;
+}
+
+export function displayBannerURL(
+  guild: ValuesType<TransformedLoginData["transformedGuilds"]>,
+  { format = "default", size = 256 } = {},
+) {
+  if (format === "default")
+    format = guild.banner && guild.banner.startsWith("a_") ? "gif" : "png";
+  if (guild.banner)
+    return `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.${format}?size=${size}`;
+  if (guild.splash)
+    return `https://cdn.discordapp.com/splashes/${guild.id}/${guild.splash}.${format}?size=${size}`;
+  return undefined;
 }

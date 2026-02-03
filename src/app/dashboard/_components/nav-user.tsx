@@ -41,8 +41,8 @@ export function NavUser() {
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <SidebarMenuButton>
+          <DropdownMenuTrigger className="w-full">
+            <SidebarMenuButton size="lg" className="cursor-pointer">
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
                   src={displayAvatarURL(user)}
@@ -59,14 +59,11 @@ export function NavUser() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--anchor-width) min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={9}
           >
-            <DropdownMenuItem>
-              <a href="/dashboard/settings">Settings</a>
-            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
                 await logOut();
