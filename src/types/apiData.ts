@@ -38,7 +38,7 @@ interface FlattenedGuild {
   manageable: boolean;
   permissions?: number;
   roles: FlattenedRole[];
-  skyraIsIn: boolean;
+  cobaltiaIsIn: boolean;
 }
 
 interface FlattenedEmoji {

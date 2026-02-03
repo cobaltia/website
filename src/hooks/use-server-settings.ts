@@ -30,11 +30,14 @@ async function updateServerSettings({
   });
 }
 
-export function useServerSettings(guildId: string) {
+export function useServerSettings(
+  guildId: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: ["guild", guildId, "settings"],
     queryFn: () => fetchServerSettings(guildId),
-    enabled: !!guildId,
+    enabled: !!guildId && (options?.enabled ?? true),
   });
 }
 

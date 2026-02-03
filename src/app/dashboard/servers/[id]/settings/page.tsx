@@ -58,7 +58,9 @@ export default function Page() {
   const params = useParams<{ id: string }>();
   const authenticated = useAuthenticated();
   const pack = useDiscordPack();
-  const { data: settings, isLoading } = useServerSettings(params.id);
+  const { data: settings, isLoading } = useServerSettings(params.id, {
+    enabled: authenticated,
+  });
   const { mutate, isPending } = useUpdateServerSettings(params.id);
 
   const server = pack.transformedGuilds?.find((g) => g.id === params.id);
