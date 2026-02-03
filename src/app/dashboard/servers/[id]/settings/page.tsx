@@ -44,8 +44,7 @@ const formSchema = z.object({
   voiceChannelId: z.string().nullable(),
   welcomeMessage: z
     .string()
-    .max(500, "Welcome message must be at most 500 characters.")
-    .optional(),
+    .max(500, "Welcome message must be at most 500 characters."),
 });
 
 type ChannelOption = {
