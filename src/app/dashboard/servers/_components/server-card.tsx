@@ -10,6 +10,7 @@ import Image from "next/image";
 import { TransformedLoginData } from "~/types/apiData";
 import { ValuesType } from "utility-types";
 import { IconCrownFilled } from "@tabler/icons-react";
+import Link from "next/link";
 
 interface serverCardProps {
   server: ValuesType<TransformedLoginData["transformedGuilds"]>;
@@ -29,15 +30,25 @@ export function ServerCard({ server, user }: serverCardProps) {
   const iconURL = displayIconURL(server);
   const bannerURL = displayBannerURL(server);
   return (
-    <>
-      <Card>
+    <Link href={`/dashboard/servers/${server.id}`} className="h-full">
+      <Card className="h-full overflow-hidden pt-0">
+        <div className="bg-muted relative h-20 w-full">
+          {bannerURL && (
+            <Image
+              src={bannerURL}
+              alt={`${server.name} banner`}
+              fill
+              className="object-cover object-center"
+            />
+          )}
+        </div>
         <CardHeader className="flex items-center gap-4">
           <Avatar className="h-14 w-14">
             <AvatarImage src={iconURL} />
             <AvatarFallback>{getInitials(server.name)}</AvatarFallback>
           </Avatar>
-          <div>
-            <CardTitle className="flex items-center gap-1">
+          <div className="min-w-0 flex-1">
+            <CardTitle className="line-clamp-2 flex items-center gap-1">
               <span>{server.name}</span>
               <span>
                 {server.ownerId === user?.id && (
@@ -52,6 +63,6 @@ export function ServerCard({ server, user }: serverCardProps) {
           </div>
         </CardHeader>
       </Card>
-    </>
+    </Link>
   );
 }
