@@ -11,14 +11,7 @@ import {
   useServerSettings,
   useUpdateServerSettings,
 } from "~/hooks/use-server-settings";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import {
@@ -30,13 +23,15 @@ import {
   ComboboxList,
 } from "~/components/ui/combobox";
 import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "~/components/ui/field";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import { FieldError } from "~/components/ui/field";
 import { Spinner } from "~/components/ui/spinner";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   logChannelId: z.string().nullable(),
@@ -80,12 +75,18 @@ export default function Page() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      mutate({
-        logChannelId: value.logChannelId,
-        welcomeChannelId: value.welcomeChannelId,
-        voiceChannelId: value.voiceChannelId,
-        welcomeMessage: value.welcomeMessage || undefined,
-      });
+      mutate(
+        {
+          logChannelId: value.logChannelId,
+          welcomeChannelId: value.welcomeChannelId,
+          voiceChannelId: value.voiceChannelId,
+          welcomeMessage: value.welcomeMessage || undefined,
+        },
+        {
+          onSuccess: () => toast.success("Settings saved successfully."),
+          onError: () => toast.error("Failed to save settings."),
+        },
+      );
     },
   });
 
@@ -118,213 +119,220 @@ export default function Page() {
           form.handleSubmit();
         }}
       >
-        <Card>
-          <CardHeader>
-            <CardTitle>Channel Configuration</CardTitle>
-            <CardDescription>
-              Configure which channels Cobaltia should use for various features.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <FieldGroup>
-              <form.Field
-                name="logChannelId"
-                children={(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  const selectedChannel = field.state.value
-                    ? textChannelOptions.find((c) => c.id === field.state.value)
-                    : null;
-                  return (
-                    <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>Log Channel</FieldLabel>
-                      <Combobox
-                        items={textChannelOptions}
-                        itemToStringValue={(channel) => channel.name}
-                        itemToStringLabel={(channel) => channel.label}
-                        value={selectedChannel ?? null}
-                        onValueChange={(channel) =>
-                          field.handleChange(channel?.id ?? null)
-                        }
-                      >
-                        <ComboboxInput
-                          id={field.name}
-                          placeholder="Search channels..."
-                          aria-invalid={isInvalid}
-                          showClear={!!field.state.value}
-                          className="w-full"
-                        />
-                        <ComboboxContent>
-                          <ComboboxEmpty>No channels found.</ComboboxEmpty>
-                          <ComboboxList>
-                            {(channel) => (
-                              <ComboboxItem key={channel.id} value={channel}>
-                                {channel.label}
-                              </ComboboxItem>
-                            )}
-                          </ComboboxList>
-                        </ComboboxContent>
-                      </Combobox>
-                      <FieldDescription>
-                        Channel where Cobaltia will send log messages.
-                      </FieldDescription>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </Field>
-                  );
-                }}
-              />
-
-              <form.Field
-                name="welcomeChannelId"
-                children={(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  const selectedChannel = field.state.value
-                    ? textChannelOptions.find((c) => c.id === field.state.value)
-                    : null;
-                  return (
-                    <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>
-                        Welcome Channel
-                      </FieldLabel>
-                      <Combobox
-                        items={textChannelOptions}
-                        itemToStringValue={(channel) => channel.name}
-                        itemToStringLabel={(channel) => channel.label}
-                        value={selectedChannel ?? null}
-                        onValueChange={(channel) =>
-                          field.handleChange(channel?.id ?? null)
-                        }
-                      >
-                        <ComboboxInput
-                          id={field.name}
-                          placeholder="Search channels..."
-                          aria-invalid={isInvalid}
-                          showClear={!!field.state.value}
-                          className="w-full"
-                        />
-                        <ComboboxContent>
-                          <ComboboxEmpty>No channels found.</ComboboxEmpty>
-                          <ComboboxList>
-                            {(channel) => (
-                              <ComboboxItem key={channel.id} value={channel}>
-                                {channel.label}
-                              </ComboboxItem>
-                            )}
-                          </ComboboxList>
-                        </ComboboxContent>
-                      </Combobox>
-                      <FieldDescription>
-                        Channel where Cobaltia will send welcome messages.
-                      </FieldDescription>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </Field>
-                  );
-                }}
-              />
-
-              <form.Field
-                name="voiceChannelId"
-                children={(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  const selectedChannel = field.state.value
-                    ? textChannelOptions.find((c) => c.id === field.state.value)
-                    : null;
-                  return (
-                    <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>
-                        Voice Log Channel
-                      </FieldLabel>
-                      <Combobox
-                        items={textChannelOptions}
-                        itemToStringValue={(channel) => channel.name}
-                        itemToStringLabel={(channel) => channel.label}
-                        value={selectedChannel ?? null}
-                        onValueChange={(channel) =>
-                          field.handleChange(channel?.id ?? null)
-                        }
-                      >
-                        <ComboboxInput
-                          id={field.name}
-                          placeholder="Search channels..."
-                          aria-invalid={isInvalid}
-                          showClear={!!field.state.value}
-                          className="w-full"
-                        />
-                        <ComboboxContent>
-                          <ComboboxEmpty>No channels found.</ComboboxEmpty>
-                          <ComboboxList>
-                            {(channel) => (
-                              <ComboboxItem key={channel.id} value={channel}>
-                                {channel.label}
-                              </ComboboxItem>
-                            )}
-                          </ComboboxList>
-                        </ComboboxContent>
-                      </Combobox>
-                      <FieldDescription>
-                        Channel where voice session summaries will be sent.
-                      </FieldDescription>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </Field>
-                  );
-                }}
-              />
-
-              <form.Field
-                name="welcomeMessage"
-                children={(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  return (
-                    <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>
-                        Welcome Message
-                      </FieldLabel>
-                      <Textarea
+        <div className="flex flex-col gap-4">
+          <form.Field
+            name="logChannelId"
+            children={(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              const selectedChannel = field.state.value
+                ? textChannelOptions.find((c) => c.id === field.state.value)
+                : null;
+              return (
+                <Card
+                  size="sm"
+                  className="flex flex-col sm:flex-row sm:items-center"
+                >
+                  <CardHeader className="flex-1">
+                    <CardTitle>Log Channel</CardTitle>
+                    <CardDescription>
+                      Channel where Cobaltia will send log messages.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="w-full sm:w-84 sm:shrink-0">
+                    <Combobox
+                      items={textChannelOptions}
+                      itemToStringValue={(channel) => channel.name}
+                      itemToStringLabel={(channel) => channel.label}
+                      value={selectedChannel ?? null}
+                      onValueChange={(channel) =>
+                        field.handleChange(channel?.id ?? null)
+                      }
+                    >
+                      <ComboboxInput
                         id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Search channels..."
                         aria-invalid={isInvalid}
-                        placeholder="Welcome to {guild}, {user}!"
-                        className="min-h-24"
+                        showClear={!!field.state.value}
+                        className="w-full"
                       />
-                      <FieldDescription>
-                        Use {"{guild}"} for server name and {"{user}"} for the
-                        member mention.
-                      </FieldDescription>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </Field>
-                  );
-                }}
-              />
-            </FieldGroup>
-          </CardContent>
-          <CardFooter className="flex justify-end gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => form.reset()}
-              disabled={isPending}
-            >
-              Reset
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : "Save Settings"}
-            </Button>
-          </CardFooter>
-        </Card>
+                      <ComboboxContent>
+                        <ComboboxEmpty>No channels found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(channel) => (
+                            <ComboboxItem key={channel.id} value={channel}>
+                              {channel.label}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
+                  </CardContent>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Card>
+              );
+            }}
+          />
+
+          <form.Field
+            name="welcomeChannelId"
+            children={(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              const selectedChannel = field.state.value
+                ? textChannelOptions.find((c) => c.id === field.state.value)
+                : null;
+              return (
+                <Card
+                  size="sm"
+                  className="flex flex-col sm:flex-row sm:items-center"
+                >
+                  <CardHeader className="flex-1">
+                    <CardTitle>Welcome Channel</CardTitle>
+                    <CardDescription>
+                      Channel where Cobaltia will send welcome messages.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="w-full sm:w-84 sm:shrink-0">
+                    <Combobox
+                      items={textChannelOptions}
+                      itemToStringValue={(channel) => channel.name}
+                      itemToStringLabel={(channel) => channel.label}
+                      value={selectedChannel ?? null}
+                      onValueChange={(channel) =>
+                        field.handleChange(channel?.id ?? null)
+                      }
+                    >
+                      <ComboboxInput
+                        id={field.name}
+                        placeholder="Search channels..."
+                        aria-invalid={isInvalid}
+                        showClear={!!field.state.value}
+                        className="w-full"
+                      />
+                      <ComboboxContent>
+                        <ComboboxEmpty>No channels found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(channel) => (
+                            <ComboboxItem key={channel.id} value={channel}>
+                              {channel.label}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
+                  </CardContent>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Card>
+              );
+            }}
+          />
+
+          <form.Field
+            name="voiceChannelId"
+            children={(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              const selectedChannel = field.state.value
+                ? textChannelOptions.find((c) => c.id === field.state.value)
+                : null;
+              return (
+                <Card
+                  size="sm"
+                  className="flex flex-col sm:flex-row sm:items-center"
+                >
+                  <CardHeader className="flex-1">
+                    <CardTitle>Voice Log Channel</CardTitle>
+                    <CardDescription>
+                      Channel where voice session summaries will be sent.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="w-full sm:w-84 sm:shrink-0">
+                    <Combobox
+                      items={textChannelOptions}
+                      itemToStringValue={(channel) => channel.name}
+                      itemToStringLabel={(channel) => channel.label}
+                      value={selectedChannel ?? null}
+                      onValueChange={(channel) =>
+                        field.handleChange(channel?.id ?? null)
+                      }
+                    >
+                      <ComboboxInput
+                        id={field.name}
+                        placeholder="Search channels..."
+                        aria-invalid={isInvalid}
+                        showClear={!!field.state.value}
+                        className="w-full"
+                      />
+                      <ComboboxContent>
+                        <ComboboxEmpty>No channels found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(channel) => (
+                            <ComboboxItem key={channel.id} value={channel}>
+                              {channel.label}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
+                  </CardContent>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Card>
+              );
+            }}
+          />
+
+          <form.Field
+            name="welcomeMessage"
+            children={(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              return (
+                <Card
+                  size="sm"
+                  className="flex flex-col sm:flex-row sm:items-start"
+                >
+                  <CardHeader className="flex-1">
+                    <CardTitle>Welcome Message</CardTitle>
+                    <CardDescription>
+                      Use {"{guild}"} for server name and {"{user}"} for the
+                      member mention.
+                    </CardDescription>
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </CardHeader>
+                  <CardContent className="w-full sm:w-84 sm:shrink-0">
+                    <Textarea
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      placeholder="Welcome to {guild}, {user}!"
+                      className="min-h-24"
+                    />
+                  </CardContent>
+                </Card>
+              );
+            }}
+          />
+        </div>
+
+        <div className="mt-4 flex justify-end gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => form.reset()}
+            disabled={isPending}
+          >
+            Reset
+          </Button>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Saving..." : "Save Settings"}
+          </Button>
+        </div>
       </form>
     </div>
   );

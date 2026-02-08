@@ -5,6 +5,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ReactQueryProvider } from "~/components/react-query-provider";
 import AuthenticatedProvider from "~/contexts/AuthenticationContext";
 import DiscordPackProvider from "~/contexts/DiscordPackContext";
+import { Toaster } from "~/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -48,6 +49,7 @@ export default function RootLayout({
               <ReactQueryProvider>{children}</ReactQueryProvider>
             </DiscordPackProvider>
           </AuthenticatedProvider>
+          <Toaster position="bottom-center" />
         </ThemeProvider>
       </body>
     </html>
