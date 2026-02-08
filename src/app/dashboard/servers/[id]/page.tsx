@@ -66,7 +66,7 @@ export default function Page() {
           {server.name}
         </h1>
       </div>
-      <div className="mt-4 mr-3 ml-3 sm:mt-0 sm:mr-4 sm:ml-4 sm:flex sm:gap-4">
+      <div className="mt-4 mr-3 ml-3 flex flex-col gap-4 sm:mt-0 sm:mr-4 sm:ml-4 sm:flex-row">
         <Card className="w-full sm:w-1/2">
           <CardHeader>
             <CardTitle>Settings</CardTitle>
@@ -79,6 +79,25 @@ export default function Page() {
               render={
                 <Link href={`/dashboard/servers/${params.id}/settings`}>
                   View Settings
+                </Link>
+              }
+            />
+          </CardFooter>
+        </Card>
+        <Card className="w-full sm:w-1/2">
+          <CardHeader>
+            <CardTitle>Audit Log</CardTitle>
+            <CardDescription>
+              View the audit log for this server
+            </CardDescription>
+          </CardHeader>
+          <CardFooter>
+            <Button
+              className="w-full"
+              nativeButton={false}
+              render={
+                <Link href={`/dashboard/servers/${params.id}/audit-log`}>
+                  View Audit Log
                 </Link>
               }
             />
